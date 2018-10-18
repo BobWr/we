@@ -4,9 +4,9 @@ spring:
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://23.106.130.113:3306/we?useUnicode=true&characterEncoding=utf8&autoReconnect=true&rewriteBatchedStatements=TRUE&allowMultiQueries=true
-    username: root
-    password: Bwg23114.
+    url: jdbc:mysql://ip:port/database?useUnicode=true&characterEncoding=utf8&autoReconnect=true&rewriteBatchedStatements=TRUE&allowMultiQueries=true
+    username:
+    password:
     name: druid
   druid:
     # 初始化大小，最小，最大
@@ -48,8 +48,8 @@ spring:
 #    keepAliveSeconds: 60
 jedis:
   pool:
-    host: 23.106.130.113
-    port: 6379
+    host:
+    port:
 #logging:
 #  config: classpath:logback-spring.xml
 #  path: logs/
