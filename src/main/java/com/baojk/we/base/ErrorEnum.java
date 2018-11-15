@@ -10,7 +10,8 @@ public enum ErrorEnum implements Error {
     INCORRECT_INPUT_ERROR(200, "1001", "用户名或密码错误"),
     NO_USER_ERROR(200, "1002", "用户不存在"),
     USER_NOT_LOGIN_ERROR(200, "1003", "用户未登录"),
-    NO_ARTICLE_ERROR(200, "1004", "无此文章"),;
+    NO_ARTICLE_ERROR(200, "1004", "无此文章"),
+    IMG_UPLOAD_FAILED(200, "1005", "图片上传失败"),;
 
     /**
      * 业务的错误码

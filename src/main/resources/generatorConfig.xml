@@ -123,11 +123,17 @@
             <!--<columnOverride column="update_time" javaType="java.time.LocalDateTime"></columnOverride>-->
         <!--</table>-->
 
-        <!-- 用户表 -->
-        <table tableName="user">
+        <!--&lt;!&ndash; 用户表 &ndash;&gt;-->
+        <!--<table tableName="user">-->
+            <!--<generatedKey column="id" sqlStatement="Mysql" identity="true"></generatedKey>-->
+            <!--<columnOverride column="create_time" javaType="java.time.LocalDateTime"></columnOverride>-->
+            <!--<columnOverride column="last_login_time" javaType="java.time.LocalDateTime"></columnOverride>-->
+        <!--</table>-->
+
+        <!-- 文章图片表 -->
+        <table tableName="article_img">
             <generatedKey column="id" sqlStatement="Mysql" identity="true"></generatedKey>
             <columnOverride column="create_time" javaType="java.time.LocalDateTime"></columnOverride>
-            <columnOverride column="last_login_time" javaType="java.time.LocalDateTime"></columnOverride>
         </table>
 
     </context>

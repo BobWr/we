@@ -3,10 +3,9 @@ package com.baojk.we.dao.mapper;
 import com.baojk.we.dao.model.User;
 import com.baojk.we.dao.model.UserExample;
 import com.baojk.we.dao.model.UserKey;
+import java.util.List;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
 
 @Component
 public interface UserMapper {

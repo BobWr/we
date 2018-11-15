@@ -7,10 +7,12 @@ import com.baojk.we.base.BaseResult;
 import com.baojk.we.base.SuccessConstants;
 import com.baojk.we.service.ArticleService;
 import com.baojk.we.vo.ArticleVO;
+import com.baojk.we.vo.SimpleArticlePageVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -49,13 +51,49 @@ public class ArticleController extends BaseController {
     }
 
     @PostMapping(value = "")
-    public BaseResponse<Integer> testAdd(@RequestParam String name, @RequestParam Integer classification,
-                                         @RequestParam Integer authorId, @RequestParam String articleContent,
-                                         @RequestParam Integer status, @RequestParam Integer isUp) throws ApiException {
+    public BaseResponse<Integer> addArticle(@RequestParam String name, @RequestParam Integer classification,
+                                            @RequestParam Integer authorId, @RequestParam String articleContent,
+                                            @RequestParam Integer status, @RequestParam Integer isUp)
+                    throws ApiException {
+
+        BaseResponse<Integer> response = new BaseResponse<>(SuccessConstants.SUCCESS);
+        BaseResult<Integer> result = articleService.addArticle(name, classification, authorId, articleContent, status, isUp);
+        if (result.isSuccess()) {
+            response.setData(result.getData());
+            return response;
+        }
+        throw new ApiException(result.getError());
+    }
+
+    @PatchMapping(value = "")
+    public BaseResponse<Integer> updateArticle(@RequestParam Integer id, @RequestParam String name,
+                                               @RequestParam Integer classification, @RequestParam Integer authorId,
+                                               @RequestParam String articleContent, @RequestParam Integer status,
+                                               @RequestParam Integer isUp) throws ApiException {
 
         BaseResponse<Integer> response = new BaseResponse<>(SuccessConstants.SUCCESS);
         BaseResult<Integer> result = articleService
-                        .addArticle(name, classification, authorId, articleContent, status, isUp);
+                        .updateArticle(id, name, classification, authorId, articleContent, status, isUp);
+        if (result.isSuccess()) {
+            response.setData(result.getData());
+            return response;
+        }
+        throw new ApiException(result.getError());
+    }
+
+    @GetMapping(value = "simple-page")
+    public BaseResponse<SimpleArticlePageVO> getSimpleArticlePage(
+                    @RequestParam(required = false) @ApiParam(value = "每页数据条数") Integer pageSize,
+                    @RequestParam(required = false) @ApiParam(value = "页码") Integer currentPage) throws ApiException {
+
+        if (pageSize == null) {
+            pageSize = 8;
+        }
+        if (currentPage == null) {
+            currentPage = 1;
+        }
+        BaseResponse<SimpleArticlePageVO> response = new BaseResponse<>(SuccessConstants.SUCCESS);
+        BaseResult<SimpleArticlePageVO> result = articleService.getSimpleArticlePage(pageSize, currentPage);
         if (result.isSuccess()) {
             response.setData(result.getData());
             return response;

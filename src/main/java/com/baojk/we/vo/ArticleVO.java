@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @Data
 public class ArticleVO {
 
-    private String name;
+    private String articleName;
 
     private String createIp;
 
