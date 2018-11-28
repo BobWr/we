@@ -101,28 +101,9 @@ public class ArticleServiceImpl implements ArticleService {
         BaseResult<ArticleVO> result = new BaseResult<>();
         ArticleExample example = new ArticleExample();
         ArticleExample.Criteria criteria = example.createCriteria();
-        if (id < 0) {
-            criteria.andStatusLessThan(3);
-            example.setOrderByClause("id desc");
-
-            List<Article> articles = articleMapper.selectByExample(example);
-
-            if (articles != null && !articles.isEmpty()) {
-                ArticleVO articleVO = new ArticleVO();
-                Article article = articles.get(0);
-                BeanUtils.copyProperties(article, articleVO);
-                article.setWatchNum(article.getWatchNum() + 1);
-                articleMapper.updateByPrimaryKey(article);
-                result.setData(articleVO);
-                return result;
-            }
-
-            result.setError(ErrorEnum.NO_ARTICLE_ERROR);
-            return result;
-        }
 
         criteria.andIdEqualTo(id);
-        criteria.andStatusLessThan(3);
+        criteria.andStatusEqualTo(1);
 
         List<Article> articles = articleMapper.selectByExample(example);
 
@@ -147,8 +128,8 @@ public class ArticleServiceImpl implements ArticleService {
         ArticleExample example = new ArticleExample();
         ArticleExample.Criteria criteria = example.createCriteria();
 
-        criteria.andStatusLessThan(3);
-        example.setOrderByClause("id desc");
+        criteria.andStatusEqualTo(1);
+        example.setOrderByClause("id asc");
 
         PageHelper.startPage(currentPage, pageSize);
         List<Article> articles = articleMapper.selectByExample(example);
@@ -169,7 +150,7 @@ public class ArticleServiceImpl implements ArticleService {
             if (articleImgMap.containsKey(article.getId())) {
                 simpleArticleVO.setSimpleImgUrl(nginxUrl + articleImgMap.get(article.getId()));
             } else {
-                simpleArticleVO.setSimpleImgUrl("http://img2we.baojk.cn/umaru.jpeg");
+                simpleArticleVO.setSimpleImgUrl(nginxUrl + "umaru.jpeg");
             }
             simpleArticleVO.setWatchNum(article.getWatchNum());
             simpleArticleVO.setSimpleArticleContent(article.getArticleContent().replaceAll("<[.[^>]]*>", ""));

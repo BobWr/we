@@ -57,4 +57,14 @@ public interface UserService {
      * @return
      */
     Map<Integer, String> getUserNames(List<Integer> ids);
+
+    /**
+     * 用户注册
+     *
+     * @param username
+     * @param password
+     *
+     * @return
+     */
+    BaseResult<Boolean> signup(String username, String password);
 }

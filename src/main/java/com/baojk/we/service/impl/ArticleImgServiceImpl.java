@@ -84,7 +84,7 @@ public class ArticleImgServiceImpl implements ArticleImgService {
         BaseResult<Map<Integer, String>> result = new BaseResult<>();
         Map<Integer, String> imgMap = new HashMap<>();
         for (int i = 0; i < articleImgs.size(); i++) {
-            if (!imgMap.containsKey(articleImgs.get(i).getId())) {
+            if (!imgMap.containsKey(articleImgs.get(i).getArticleId())) {
                 imgMap.put(articleImgs.get(i).getArticleId(), articleImgs.get(i).getArticleImgName());
             }
         }

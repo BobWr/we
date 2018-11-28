@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -42,9 +43,8 @@ public class UserController extends BaseController {
      */
     @PostMapping(value = "")
     @ApiOperation(value = "登陆")
-    public BaseResponse<String> login(@RequestParam(required = true) @ApiParam(value = "用户名") String username,
-                                      @RequestParam(required = true) @ApiParam(value = "密码") String password)
-                    throws ApiException {
+    public BaseResponse<String> login(@RequestParam @ApiParam(value = "用户名") String username,
+                                      @RequestParam @ApiParam(value = "密码") String password) throws ApiException {
         BaseResponse<String> baseResponse = new BaseResponse<>(SuccessConstants.SUCCESS);
 
         BaseResult<String> baseResult = userService.login(username, password);
@@ -67,8 +67,7 @@ public class UserController extends BaseController {
      */
     @DeleteMapping(value = "")
     @ApiOperation(value = "登出")
-    public BaseResponse<Boolean> logout(@RequestParam(required = true) @ApiParam(value = "token") String token)
-                    throws ApiException {
+    public BaseResponse<Boolean> logout() throws ApiException {
         BaseResponse<Boolean> baseResponse = new BaseResponse<>(SuccessConstants.SUCCESS);
 
         BaseResult<Boolean> baseResult = userService.logout(token);
@@ -82,19 +81,37 @@ public class UserController extends BaseController {
     /**
      * 获取用户信息
      *
-     * @param token
-     *
      * @return
      *
      * @throws Exception
      */
     @GetMapping(value = "")
     @ApiOperation(value = "获取用户信息")
-    public BaseResponse<UserVO> getUser(@RequestParam(required = true) @ApiParam(value = "token") String token)
-                    throws ApiException {
+    public BaseResponse<UserVO> getUser() throws ApiException {
         BaseResponse<UserVO> baseResponse = new BaseResponse<>(SuccessConstants.SUCCESS);
 
         BaseResult<UserVO> baseResult = userService.getUser(token);
+        if (baseResult.isSuccess()) {
+            baseResponse.setData(baseResult.getData());
+            return baseResponse;
+        }
+        throw new ApiException(baseResult.getError());
+    }
+
+    /**
+     * 用户注册
+     *
+     * @return
+     *
+     * @throws Exception
+     */
+    @PutMapping(value = "")
+    @ApiOperation(value = "注册")
+    public BaseResponse<Boolean> signup(@RequestParam @ApiParam(value = "用户名") String username,
+                                        @RequestParam @ApiParam(value = "密码") String password) throws ApiException {
+        BaseResponse<Boolean> baseResponse = new BaseResponse<>(SuccessConstants.SUCCESS);
+
+        BaseResult<Boolean> baseResult = userService.signup(username, password);
         if (baseResult.isSuccess()) {
             baseResponse.setData(baseResult.getData());
             return baseResponse;

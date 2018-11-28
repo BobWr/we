@@ -6,6 +6,7 @@ import com.baojk.we.dao.mapper.UserMapper;
 import com.baojk.we.dao.model.User;
 import com.baojk.we.dao.model.UserExample;
 import com.baojk.we.dao.model.UserKey;
+import com.baojk.we.redis.RedisManager;
 import com.baojk.we.service.UserService;
 import com.baojk.we.vo.UserVO;
 import lombok.extern.slf4j.Slf4j;
@@ -30,8 +31,8 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserMapper userMapper;
 
-//    @Autowired
-//    private RedisManager redisManager;
+    @Autowired
+    private RedisManager redisManager;
 
     @Override
     public BaseResult<String> login(String username, String password) {
@@ -46,13 +47,13 @@ public class UserServiceImpl implements UserService {
             return baseResult;
         }
         User user = users.get(0);
-        //        if (!user.getPwd().equals(encryption(password))) {
-        if (!user.getPwd().equals(password)) {
+        if (!user.getPwd().equals(encryption(password))) {
+            //        if (!user.getPwd().equals(password)) {
             baseResult.setError(ErrorEnum.INCORRECT_INPUT_ERROR);
             return baseResult;
         }
-        String token = encryption(username + password);
-//        redisManager.addToken(token, user.getId());
+        String token = encryption(username + password + System.currentTimeMillis());
+        redisManager.addToken(token, user.getId());
         baseResult.setData(token);
         return baseResult;
     }
@@ -61,7 +62,7 @@ public class UserServiceImpl implements UserService {
     public BaseResult<Boolean> logout(String token) {
 
         BaseResult<Boolean> result = new BaseResult<>();
-//        result.setData(redisManager.delToken(token));
+        result.setData(redisManager.delToken(token));
         return result;
     }
 
@@ -84,7 +85,7 @@ public class UserServiceImpl implements UserService {
         BaseResult<UserVO> baseResult = new BaseResult<>();
         UserExample userExample = new UserExample();
         UserExample.Criteria criteria = userExample.createCriteria();
-//        criteria.andIdEqualTo(redisManager.getValue(token));
+        criteria.andIdEqualTo(redisManager.getValue(token));
         List<User> users = userMapper.selectByExample(userExample);
         if (users.size() == 0) {
             baseResult.setError(ErrorEnum.NO_USER_ERROR);
@@ -122,5 +123,27 @@ public class UserServiceImpl implements UserService {
         List<User> users = userMapper.selectByExample(userExample);
         users.forEach(user -> map.put(user.getId(), user.getUserName()));
         return map;
+    }
+
+    @Override
+    public BaseResult<Boolean> signup(String username, String password) {
+
+        BaseResult<Boolean> result = new BaseResult<>();
+
+        UserExample userExample = new UserExample();
+        UserExample.Criteria criteria = userExample.createCriteria();
+        criteria.andUserNameEqualTo(username);
+        List<User> users = userMapper.selectByExample(userExample);
+        if (users.size() != 0) {
+            result.setError(ErrorEnum.USER_ALREADY_EXIST_ERROR);
+            return result;
+        }
+
+        User user = new User();
+        user.setUserName(username);
+        user.setPwd(encryption(password));
+        userMapper.insertSelective(user);
+        result.setData(true);
+        return result;
     }
 }

@@ -6,12 +6,13 @@ package com.baojk.we.base;
  */
 public enum ErrorEnum implements Error {
 
-    SYS__ERROR(200, "1000", "系统错误"),
-    INCORRECT_INPUT_ERROR(200, "1001", "用户名或密码错误"),
-    NO_USER_ERROR(200, "1002", "用户不存在"),
-    USER_NOT_LOGIN_ERROR(200, "1003", "用户未登录"),
-    NO_ARTICLE_ERROR(200, "1004", "无此文章"),
-    IMG_UPLOAD_FAILED(200, "1005", "图片上传失败"),;
+    SYS__ERROR(200, "1000", "系统错误!"),
+    INCORRECT_INPUT_ERROR(200, "1001", "用户名或密码错误!"),
+    NO_USER_ERROR(200, "1002", "用户不存在!"),
+    USER_NOT_LOGIN_ERROR(200, "1003", "用户未登录!"),
+    NO_ARTICLE_ERROR(200, "1004", "无此文章!"),
+    IMG_UPLOAD_FAILED(200, "1005", "图片上传失败!"),
+    USER_ALREADY_EXIST_ERROR(200, "1006", "用户名已被注册!"),;
 
     /**
      * 业务的错误码

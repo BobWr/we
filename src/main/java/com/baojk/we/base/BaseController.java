@@ -1,7 +1,10 @@
 package com.baojk.we.base;
 
+import com.baojk.we.redis.RedisManager;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -24,11 +27,22 @@ public class BaseController {
 
     protected HttpServletResponse response;
 
+    @Autowired
+    private RedisManager redisManager;
+
+    protected String token;
+    protected Integer userId;
+
     @ModelAttribute
     public void setReqAndRes(HttpServletRequest request, HttpServletResponse response) {
         this.session = request.getSession();
         this.request = request;
         this.response = response;
+
+        token = request.getHeader("Authorization");
+        if (!StringUtils.isEmpty(token)) {
+            this.userId = redisManager.getValue(token);
+        }
     }
 
     @ExceptionHandler({ ApiException.class })

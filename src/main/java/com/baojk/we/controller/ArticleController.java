@@ -30,14 +30,6 @@ public class ArticleController extends BaseController {
     @Autowired
     private ArticleService articleService;
 
-    //    @PostMapping(value = "")
-    //    public BaseResponse<Integer> addArticle(@RequestParam ArticleVO articleVO) {
-    //
-    //        BaseResponse<Integer> response = new BaseResponse<>(SuccessConstants.SUCCESS);
-    //        response.setData(articleService.addArticle(articleVO));
-    //        return response;
-    //    }
-
     @GetMapping(value = "")
     public BaseResponse<ArticleVO> getArticle(@RequestParam @ApiParam(value = "id") Integer id) throws ApiException {
 
@@ -52,12 +44,12 @@ public class ArticleController extends BaseController {
 
     @PostMapping(value = "")
     public BaseResponse<Integer> addArticle(@RequestParam String name, @RequestParam Integer classification,
-                                            @RequestParam Integer authorId, @RequestParam String articleContent,
-                                            @RequestParam Integer status, @RequestParam Integer isUp)
-                    throws ApiException {
+                                            @RequestParam String articleContent, @RequestParam Integer status,
+                                            @RequestParam Integer isUp) throws ApiException {
 
         BaseResponse<Integer> response = new BaseResponse<>(SuccessConstants.SUCCESS);
-        BaseResult<Integer> result = articleService.addArticle(name, classification, authorId, articleContent, status, isUp);
+        BaseResult<Integer> result = articleService
+                        .addArticle(name, classification, userId, articleContent, status, isUp);
         if (result.isSuccess()) {
             response.setData(result.getData());
             return response;
@@ -67,13 +59,13 @@ public class ArticleController extends BaseController {
 
     @PatchMapping(value = "")
     public BaseResponse<Integer> updateArticle(@RequestParam Integer id, @RequestParam String name,
-                                               @RequestParam Integer classification, @RequestParam Integer authorId,
+                                               @RequestParam Integer classification,
                                                @RequestParam String articleContent, @RequestParam Integer status,
                                                @RequestParam Integer isUp) throws ApiException {
 
         BaseResponse<Integer> response = new BaseResponse<>(SuccessConstants.SUCCESS);
         BaseResult<Integer> result = articleService
-                        .updateArticle(id, name, classification, authorId, articleContent, status, isUp);
+                        .updateArticle(id, name, classification, userId, articleContent, status, isUp);
         if (result.isSuccess()) {
             response.setData(result.getData());
             return response;
