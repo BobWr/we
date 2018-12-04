@@ -22,4 +22,8 @@ public class SimpleArticleVO {
     private Integer authorId;
 
     private String simpleImgUrl;
+
+    private String tagName;
+
+    private String tagColor;
 }

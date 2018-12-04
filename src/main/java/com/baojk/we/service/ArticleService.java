@@ -4,6 +4,8 @@ import com.baojk.we.base.BaseResult;
 import com.baojk.we.vo.ArticleVO;
 import com.baojk.we.vo.SimpleArticlePageVO;
 
+import java.util.List;
+
 /**
  * @author baojikui (bjklwr@outlook.com)
  * @date 2018/10/12
@@ -30,5 +32,5 @@ public interface ArticleService {
     /**
      * 分页查询
      */
-    BaseResult<SimpleArticlePageVO> getSimpleArticlePage(Integer pageSize, Integer currentPage);
+    BaseResult<SimpleArticlePageVO> getSimpleArticlePage(Integer pageSize, Integer currentPage,List<Integer> classes);
 }

@@ -1,12 +1,13 @@
 package com.baojk.we.service.impl;
 
 import com.baojk.we.base.BaseResult;
-import com.baojk.we.base.ErrorEnum;
 import com.baojk.we.base.Page;
 import com.baojk.we.dao.mapper.ArticleMapper;
 import com.baojk.we.dao.model.Article;
 import com.baojk.we.dao.model.ArticleExample;
 import com.baojk.we.dao.model.ArticleKey;
+import com.baojk.we.enums.ArticleClassificationEnum;
+import com.baojk.we.enums.ErrorEnum;
 import com.baojk.we.service.ArticleImgService;
 import com.baojk.we.service.ArticleService;
 import com.baojk.we.service.UserService;
@@ -122,23 +123,35 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public BaseResult<SimpleArticlePageVO> getSimpleArticlePage(Integer pageSize, Integer currentPage) {
+    public BaseResult<SimpleArticlePageVO> getSimpleArticlePage(Integer pageSize, Integer currentPage,
+                                                                List<Integer> classes) {
 
         BaseResult<SimpleArticlePageVO> result = new BaseResult<>();
         ArticleExample example = new ArticleExample();
         ArticleExample.Criteria criteria = example.createCriteria();
 
         criteria.andStatusEqualTo(1);
-        example.setOrderByClause("id asc");
+        if (CollectionUtils.isEmpty(classes)) {
+            result.setError(ErrorEnum.NO_ARTICLE_ERROR);
+            return result;
+        }
+        criteria.andClassificationIn(classes);
+        example.setOrderByClause("watch_num desc");
 
         PageHelper.startPage(currentPage, pageSize);
         List<Article> articles = articleMapper.selectByExample(example);
+
+        if (CollectionUtils.isEmpty(articles)) {
+            result.setError(ErrorEnum.NO_ARTICLE_ERROR);
+            return result;
+        }
+
         PageInfo<Article> articlePageInfo = new PageInfo<>(articles);
         long total = articlePageInfo.getTotal();
 
         List<SimpleArticleVO> vos = new ArrayList<>();
 
-        //得到文章的第一个图片，放到卡片里，如果没有图片，则设置成默认图片
+        //得到文章的第一个图片，放到卡片里，如果没有图片，则不添加
         List<Integer> articleIds = new ArrayList<>();
         articles.forEach(article -> articleIds.add(article.getId()));
         Map<Integer, String> articleImgMap = articleImgService.getImgBuArticleIds(articleIds).getData();
@@ -148,20 +161,25 @@ public class ArticleServiceImpl implements ArticleService {
             SimpleArticleVO simpleArticleVO = new SimpleArticleVO();
             simpleArticleVO.setName(article.getArticleName());
             if (articleImgMap.containsKey(article.getId())) {
-                simpleArticleVO.setSimpleImgUrl(nginxUrl + articleImgMap.get(article.getId()));
+                simpleArticleVO.setSimpleImgUrl(
+                                "background-image: url(\"" + nginxUrl + articleImgMap.get(article.getId()) + "\");");
             } else {
-                simpleArticleVO.setSimpleImgUrl(nginxUrl + "umaru.jpeg");
+                //                simpleArticleVO.setSimpleImgUrl("background-image: url(\"" + nginxUrl + "umaru
+                // .jpeg" + "\");");
             }
             simpleArticleVO.setWatchNum(article.getWatchNum());
             simpleArticleVO.setSimpleArticleContent(article.getArticleContent().replaceAll("<[.[^>]]*>", ""));
             simpleArticleVO.setAuthorId(article.getAuthorId());
             simpleArticleVO.setId(article.getId());
+            simpleArticleVO.setTagName(ArticleClassificationEnum.getVal(article.getClassification()));
+            simpleArticleVO.setTagColor(ArticleClassificationEnum.getTagColor(article.getClassification()));
             vos.add(simpleArticleVO);
             authorIds.add(article.getAuthorId());
         });
 
         if (CollectionUtils.isEmpty(authorIds)) {
-            return null;
+            result.setError(ErrorEnum.NO_ARTICLE_ERROR);
+            return result;
         }
         Map<Integer, String> nameMap = userService.getUserNames(authorIds);
         vos.forEach(vo -> {

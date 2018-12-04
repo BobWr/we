@@ -1,4 +1,6 @@
-package com.baojk.we.base;
+package com.baojk.we.enums;
+
+import com.baojk.we.base.Error;
 
 /**
  * @author baojikui (bjklwr@outlook.com)

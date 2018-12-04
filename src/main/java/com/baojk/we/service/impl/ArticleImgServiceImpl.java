@@ -1,14 +1,15 @@
 package com.baojk.we.service.impl;
 
 import com.baojk.we.base.BaseResult;
-import com.baojk.we.base.ErrorEnum;
 import com.baojk.we.dao.mapper.ArticleImgMapper;
 import com.baojk.we.dao.model.ArticleImg;
 import com.baojk.we.dao.model.ArticleImgExample;
+import com.baojk.we.enums.ErrorEnum;
 import com.baojk.we.service.ArticleImgService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.BufferedOutputStream;

@@ -1,7 +1,7 @@
 package com.baojk.we.service.impl;
 
 import com.baojk.we.base.BaseResult;
-import com.baojk.we.base.ErrorEnum;
+import com.baojk.we.enums.ErrorEnum;
 import com.baojk.we.dao.mapper.UserMapper;
 import com.baojk.we.dao.model.User;
 import com.baojk.we.dao.model.UserExample;
