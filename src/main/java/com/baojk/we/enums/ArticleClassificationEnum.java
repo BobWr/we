@@ -12,9 +12,10 @@ public enum ArticleClassificationEnum {
     BACK_END(102, "后端"),
     DATABASE(103, "数据库"),
     OPERATIONS(104, "运维"),
-    ALGORITHM(105, "算法"),
     GOOD_IDEAS(106, "奇技淫巧"),
-    ZATAN(200, "随笔"),;
+    ZATAN(200, "随笔"),
+    ALGORITHM(300, "算法"),
+    JAVA(400, "Java"),;
 
     /**
      * 分类编码
@@ -41,12 +42,14 @@ public enum ArticleClassificationEnum {
                 return "数据库";
             case 104:
                 return "运维";
-            case 105:
+            case 300:
                 return "算法";
             case 106:
                 return "奇技淫巧";
             case 200:
                 return "随笔";
+            case 400:
+                return "Java";
             default:
                 break;
         }
@@ -63,11 +66,13 @@ public enum ArticleClassificationEnum {
                 return "background-color: #ff40403a;";
             case 104:
                 return "background-color: #ff40403a;";
-            case 105:
-                return "background-color: #ff40403a;";
+            case 300:
+                return "background-color: #40a0ff4b;";
             case 106:
                 return "background-color: #ff40403a;";
             case 200:
+                return "background-color: #40ff503a;";
+            case 400:
                 return "background-color: #40ff503a;";
             default:
                 break;
@@ -85,9 +90,10 @@ public enum ArticleClassificationEnum {
                     list.add(102);
                     list.add(103);
                     list.add(104);
-                    list.add(105);
+                    list.add(300);
                     list.add(106);
                     list.add(200);
+                    list.add(400);
                     break;
                 case "前端":
                     list.add(101);
@@ -102,13 +108,16 @@ public enum ArticleClassificationEnum {
                     list.add(104);
                     break;
                 case "算法":
-                    list.add(105);
+                    list.add(300);
                     break;
                 case "奇技淫巧":
                     list.add(106);
                     break;
                 case "随笔":
                     list.add(200);
+                    break;
+                case "Java":
+                    list.add(400);
                     break;
                 default:
                     break;
