@@ -11,4 +11,6 @@ import lombok.Data;
 public class SimpleArticlePageVO {
 
     private Page<SimpleArticleVO> page;
+
+    private Integer visitTimes;
 }

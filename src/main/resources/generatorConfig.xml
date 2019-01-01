@@ -131,7 +131,13 @@
         <!--</table>-->
 
         <!-- 文章图片表 -->
-        <table tableName="article_img">
+        <!--<table tableName="article_img">-->
+            <!--<generatedKey column="id" sqlStatement="Mysql" identity="true"></generatedKey>-->
+            <!--<columnOverride column="create_time" javaType="java.time.LocalDateTime"></columnOverride>-->
+        <!--</table>-->
+
+        <!-- 访问记录表 -->
+        <table tableName="visit_record">
             <generatedKey column="id" sqlStatement="Mysql" identity="true"></generatedKey>
             <columnOverride column="create_time" javaType="java.time.LocalDateTime"></columnOverride>
         </table>

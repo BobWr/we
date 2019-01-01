@@ -1,6 +1,7 @@
 package com.baojk.we.base;
 
 import com.baojk.we.redis.RedisManager;
+import com.baojk.we.service.VisitRecordService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -30,6 +31,9 @@ public class BaseController {
     @Autowired
     private RedisManager redisManager;
 
+    @Autowired
+    private VisitRecordService visitRecordService;
+
     protected String token;
     protected Integer userId;
 
@@ -38,6 +42,8 @@ public class BaseController {
         this.session = request.getSession();
         this.request = request;
         this.response = response;
+
+        visitRecordService.add(request.getRemoteHost() + ":" + request.getRemotePort(),request.getRequestURI());
 
         token = request.getHeader("Authorization");
         if (!StringUtils.isEmpty(token)) {

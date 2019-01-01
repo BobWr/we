@@ -11,6 +11,7 @@ import com.baojk.we.enums.ErrorEnum;
 import com.baojk.we.service.ArticleImgService;
 import com.baojk.we.service.ArticleService;
 import com.baojk.we.service.UserService;
+import com.baojk.we.service.VisitRecordService;
 import com.baojk.we.vo.ArticleVO;
 import com.baojk.we.vo.SimpleArticlePageVO;
 import com.baojk.we.vo.SimpleArticleVO;
@@ -41,6 +42,9 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Autowired
     private ArticleImgService articleImgService;
+
+    @Autowired
+    private VisitRecordService visitRecordService;
 
     @Value("${img.nginxUrl}")
     private String nginxUrl;
@@ -193,6 +197,9 @@ public class ArticleServiceImpl implements ArticleService {
         finalResPage.setPageSize(pageSize);
         finalResPage.setRecordTotal((int) total);
         simpleArticlePageVO.setPage(finalResPage);
+
+        simpleArticlePageVO.setVisitTimes(visitRecordService.getTotal().getData());
+
         result.setData(simpleArticlePageVO);
 
         return result;
