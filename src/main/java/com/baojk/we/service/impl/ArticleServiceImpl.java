@@ -140,7 +140,7 @@ public class ArticleServiceImpl implements ArticleService {
             return result;
         }
         criteria.andClassificationIn(classes);
-        example.setOrderByClause("watch_num desc");
+        example.setOrderByClause("id desc");
 
         PageHelper.startPage(currentPage, pageSize);
         List<Article> articles = articleMapper.selectByExample(example);

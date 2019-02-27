@@ -59,21 +59,21 @@ public enum ArticleClassificationEnum {
     public static String getTagColor(int code) {
         switch (code) {
             case 101:
-                return "background-color: #ff40403a;";
+                return "background-color: #6b5152;";
             case 102:
-                return "background-color: #ff40403a;";
+                return "background-color: #c1cbd7;";
             case 103:
-                return "background-color: #ff40403a;";
+                return "background-color: #96a48b;";
             case 104:
-                return "background-color: #ff40403a;";
+                return "background-color: #d8caaf;";
             case 300:
-                return "background-color: #40a0ff4b;";
+                return "background-color: #965454;";
             case 106:
-                return "background-color: #ff40403a;";
+                return "background-color: #d3d4cc;";
             case 200:
-                return "background-color: #40ff503a;";
+                return "background-color: #a27e7e;";
             case 400:
-                return "background-color: #40ff503a;";
+                return "background-color: #9ca8b8;";
             default:
                 break;
         }
